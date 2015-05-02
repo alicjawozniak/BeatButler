@@ -1,29 +1,171 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.github.alicjawozniak.beatbutler.view.PlayerView">
-  <grid id="27dc6" binding="mainPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
+  <grid id="27dc6" binding="mainPnl" layout-manager="GridLayoutManager" row-count="2" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+    <margin top="0" left="0" bottom="0" right="0"/>
     <constraints>
-      <xy x="138" y="158" width="603" height="471"/>
+      <xy x="138" y="158" width="732" height="471"/>
     </constraints>
     <properties/>
     <border type="none"/>
     <children>
-      <grid id="b66a4" binding="playbackPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
-        <constraints border-constraint="North"/>
+      <scrollpane id="ff722">
+        <constraints>
+          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="2" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <horizontalScrollBarPolicy value="31"/>
+        </properties>
+        <border type="empty"/>
+        <children>
+          <component id="3f6ae" class="javax.swing.JList" binding="playlistList">
+            <constraints/>
+            <properties>
+              <model>
+                <item value="System of a Down - Aerials"/>
+                <item value="Rammstein - Buck dich"/>
+                <item value="Darude - Sandstorm"/>
+                <item value="AC/DC - Back in Black"/>
+              </model>
+            </properties>
+          </component>
+        </children>
+      </scrollpane>
+      <grid id="22dd9" layout-manager="BorderLayout" hgap="0" vgap="0">
+        <constraints>
+          <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+        </constraints>
         <properties/>
         <border type="none"/>
-        <children/>
+        <children>
+          <component id="17a25" class="javax.swing.JTree" binding="libraryTree">
+            <constraints border-constraint="Center"/>
+            <properties/>
+          </component>
+        </children>
       </grid>
-      <grid id="2fe48" binding="playlistPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
-        <constraints border-constraint="West"/>
+      <grid id="b66a4" layout-manager="GridLayoutManager" row-count="2" column-count="5" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+        <margin top="4" left="8" bottom="4" right="8"/>
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="7" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
         <properties/>
         <border type="none"/>
-        <children/>
-      </grid>
-      <grid id="22dd9" binding="libraryPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
-        <constraints border-constraint="Center"/>
-        <properties/>
-        <border type="none"/>
-        <children/>
+        <children>
+          <component id="e9dcb" class="javax.swing.JLabel" binding="albumLbl">
+            <constraints>
+              <grid row="0" column="0" row-span="2" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <icon value="tmp-album.png"/>
+              <text value=""/>
+            </properties>
+          </component>
+          <component id="46f2d" class="javax.swing.JButton" binding="prevBtn">
+            <constraints>
+              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <focusPainted value="false"/>
+              <icon value="MD-previous.png"/>
+              <text value=""/>
+            </properties>
+          </component>
+          <component id="88852" class="javax.swing.JButton" binding="playBtn">
+            <constraints>
+              <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <focusPainted value="false"/>
+              <icon value="MD-play.png"/>
+              <text value=""/>
+            </properties>
+          </component>
+          <component id="26eed" class="javax.swing.JButton" binding="nextBtn">
+            <constraints>
+              <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <focusPainted value="false"/>
+              <icon value="MD-next.png"/>
+              <text value=""/>
+            </properties>
+          </component>
+          <component id="a7c9f" class="javax.swing.JLabel" binding="playingNowLbl">
+            <constraints>
+              <grid row="1" column="1" row-span="1" col-span="3" vsize-policy="0" hsize-policy="0" anchor="9" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="empty"/>
+              <verticalAlignment value="0"/>
+            </properties>
+          </component>
+          <grid id="463f" layout-manager="FlowLayout" hgap="0" vgap="0" flow-align="2">
+            <constraints>
+              <grid row="1" column="4" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="5" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="3752c" class="javax.swing.JLabel" binding="volumeLbl">
+                <constraints/>
+                <properties>
+                  <horizontalAlignment value="10"/>
+                  <preferredSize width="24" height="16"/>
+                  <text value=""/>
+                </properties>
+              </component>
+              <component id="e8abb" class="javax.swing.JSlider" binding="volumeSlr">
+                <constraints/>
+                <properties>
+                  <focusable value="false"/>
+                  <paintLabels value="false"/>
+                  <paintTicks value="false"/>
+                  <preferredSize width="96" height="16"/>
+                </properties>
+              </component>
+              <component id="15b3c" class="javax.swing.JButton" binding="shuffleBtn">
+                <constraints/>
+                <properties>
+                  <borderPainted value="true"/>
+                  <focusPainted value="false"/>
+                  <icon value="MD-shuffle.png"/>
+                  <preferredSize width="24" height="24"/>
+                  <text value=""/>
+                </properties>
+              </component>
+              <component id="f19f8" class="javax.swing.JButton" binding="repeatBtn">
+                <constraints/>
+                <properties>
+                  <focusPainted value="false"/>
+                  <icon value="MD-repeat.png"/>
+                  <preferredSize width="24" height="24"/>
+                  <text value=""/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+          <grid id="a66b4" layout-manager="BorderLayout" hgap="5" vgap="0">
+            <constraints>
+              <grid row="0" column="4" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="5fc99" class="javax.swing.JSlider" binding="progressSlr">
+                <constraints border-constraint="Center"/>
+                <properties>
+                  <focusable value="false"/>
+                </properties>
+              </component>
+              <component id="e0e3d" class="javax.swing.JLabel" binding="timeLbl">
+                <constraints border-constraint="West"/>
+                <properties>
+                  <text value="0:00"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+        </children>
       </grid>
     </children>
   </grid>
