@@ -1,6 +1,9 @@
 package com.github.alicjawozniak.beatbutler;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.awt.*;
+import java.io.IOException;
 import java.net.URL;
 
 public class ResourceLoader {
@@ -12,5 +15,9 @@ public class ResourceLoader {
 
     public static ImageIcon getImageIcon(String name) {
         return new ImageIcon(getResource(name));
+    }
+
+    public static Image getImage(String name) throws IOException {
+        return ImageIO.read(getResource(name));
     }
 }

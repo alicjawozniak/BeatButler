@@ -1,39 +1,40 @@
 package com.github.alicjawozniak.beatbutler.controller.actions;
 
-import com.github.alicjawozniak.beatbutler.Main;
 import com.github.alicjawozniak.beatbutler.ResourceLoader;
+import com.github.alicjawozniak.beatbutler.controller.Controller;
 import com.github.alicjawozniak.beatbutler.model.PlaybackState;
-import com.github.alicjawozniak.beatbutler.model.PlayerModel;
-import com.github.alicjawozniak.beatbutler.view.PlayerView;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 
 public class PlayAction extends AbstractAction {
-    private ImageIcon playIcon = ResourceLoader.getImageIcon("MD-play.png");
-    private ImageIcon pauseIcon = ResourceLoader.getImageIcon("MD-pause.png");
+    private static Controller c = Controller.getInstance();
+    private static ImageIcon playIcon = ResourceLoader.getImageIcon("MD-play.png");
+    private static ImageIcon pauseIcon = ResourceLoader.getImageIcon("MD-pause.png");
 
-    private PlayerModel model = Main.getModel();
-    private PlayerView view = Main.getView();
+    private static PlayAction instance = new PlayAction();
 
-    public PlayAction() {
+    private PlayAction() {
         super("Play");
         putValue(SMALL_ICON, playIcon);
     }
 
+    public static PlayAction getInstance() {
+        return instance;
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
-        switch (model.getPlaybackState()) {
+        switch (c.getModel().getPlaybackState()) {
             case PAUSED:
-            case STOPPED:
+            case STOPPED: // play
                 putValue(SMALL_ICON, pauseIcon);
-                model.setPlaybackState(PlaybackState.PLAYING);
+                c.getModel().setPlaybackState(PlaybackState.PLAYING);
                 break;
-            case PLAYING:
+            case PLAYING: // pause
                 putValue(SMALL_ICON, playIcon);
-                model.setPlaybackState(PlaybackState.PAUSED);
+                c.getModel().setPlaybackState(PlaybackState.PAUSED);
                 break;
         }
-        System.out.println(e.paramString());
     }
 }

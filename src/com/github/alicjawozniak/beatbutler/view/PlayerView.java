@@ -1,22 +1,25 @@
 package com.github.alicjawozniak.beatbutler.view;
 
+import com.github.alicjawozniak.beatbutler.ResourceLoader;
+import com.github.alicjawozniak.beatbutler.controller.Controller;
 import com.github.alicjawozniak.beatbutler.controller.actions.NextAction;
 import com.github.alicjawozniak.beatbutler.controller.actions.PlayAction;
 import com.github.alicjawozniak.beatbutler.controller.actions.PreviousAction;
 import com.github.alicjawozniak.beatbutler.controller.actions.ToggleShuffleAction;
+import com.github.alicjawozniak.beatbutler.model.Song;
+import com.github.alicjawozniak.beatbutler.model.library.Library;
 
 import javax.swing.*;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.MutableTreeNode;
 import java.awt.*;
+import java.io.IOException;
 
 public class PlayerView {
-    TagEditorView editorView = new TagEditorView();
-    PlayerMenuBar menuBar = new PlayerMenuBar();
+    Controller c = Controller.getInstance();
+
+    //TagEditorView editorView = new TagEditorView();
     private JPanel mainPnl;
     private JTree libraryTree;
-    private JList<String> playlistList;
+    private JList<Song> playlistList;
     private JLabel playingNowLbl;
     private JButton prevBtn;
     private JButton playBtn;
@@ -29,16 +32,25 @@ public class PlayerView {
     private JButton repeatBtn;
     private JButton shuffleBtn;
 
+    private Image defaultCover;
+
     public PlayerView() {
         final JFrame frame = new JFrame("BeatButler");
+
+        // default cover art
+        try {
+            defaultCover = ResourceLoader.getImage("tmp-album.png");
+        } catch (IOException e) {
+            e.printStackTrace();
+            defaultCover = null;
+        }
+
         //frame.setUndecorated(true); /*todo własna ramka*/
         frame.setContentPane(mainPnl);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         // menu bar
-        frame.setJMenuBar(menuBar.getBar());
-
-        // playBtn
+        frame.setJMenuBar(new PlayerMenuBar().getBar());
 
         // volumeSld
         volumeSlr.setValue(0);
@@ -47,7 +59,7 @@ public class PlayerView {
         progressSlr.setValue(0);
 
         // buttons
-        playBtn.setAction(new PlayAction());
+        playBtn.setAction(PlayAction.getInstance());
         nextBtn.setAction(new NextAction());
         prevBtn.setAction(new PreviousAction());
         shuffleBtn.setAction(new ToggleShuffleAction());
@@ -57,40 +69,32 @@ public class PlayerView {
         prevBtn.setHideActionText(true);
         shuffleBtn.setHideActionText(true);
 
+        // playlist
+        playlistList.setModel(c.getModel().getCurrentPlaylist());
+        playlistList.setCellRenderer(new PlaylistCellRenderer());
+
         // library
-        // todo przenieść do oddzielnej klasy
-
-        MutableTreeNode jTreeRoot = new DefaultMutableTreeNode();
-
-        MutableTreeNode[] categories = new MutableTreeNode[]{
-                new DefaultMutableTreeNode("Songs"),
-                new DefaultMutableTreeNode("Albums"),
-                new DefaultMutableTreeNode("Artists"),
-                new DefaultMutableTreeNode("Playlists"),
-        };
-
-        for (int i = 0; i < categories.length; i++) {
-            jTreeRoot.insert(categories[i], i);
-        }
-
-        libraryTree.setModel(new DefaultTreeModel(jTreeRoot));
+        libraryTree.setModel(new Library());
         libraryTree.setRootVisible(false);
+        libraryTree.setCellRenderer(new LibraryCellRenderer());
 
         frame.pack();
         frame.setVisible(true);
     }
 
+    public Image getDefaultCover() {
+        return defaultCover;
+    }
+
     // playlistPnl
-    public void setPlaylistSongs(String[] songs) {
-        playlistList.setListData(songs);
-    }
+    /*
+    public Song[] getPlaylistSelectedSongs() {
+        return playlistList;
+    }*/
 
-    public int[] getPlaylistSelectedSongs() {
-        return playlistList.getSelectedIndices();
-    }
-
-    public void setAlbumCover(byte[] imageData) {
-        albumLbl.setIcon(new ImageIcon(imageData));
+    public void setCover(Image cover) {
+        ImageIcon icon = new ImageIcon(cover.getScaledInstance(albumLbl.getWidth(), albumLbl.getHeight(), Image.SCALE_SMOOTH));
+        albumLbl.setIcon(icon);
     }
 
     public void setPlayingNowSong(String song, int time) {
