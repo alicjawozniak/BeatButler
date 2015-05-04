@@ -91,11 +91,8 @@ public class Node<T> implements TreeNode {
 
     @Override
     public int getIndex(TreeNode node) {
-        if (node instanceof Node) {
-            return children.indexOf(node);
-        } else {
-            return -1;
-        }
+
+        return children.indexOf(node);
     }
 
     @Override
@@ -127,17 +124,5 @@ public class Node<T> implements TreeNode {
                 return iterator.next();
             }
         };
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder builder = new StringBuilder();
-        for (Node node : children) {
-            builder.append(node);
-        }
-        return "Node{" +
-                "value=" + value +
-                ", key='" + key + '\'' +
-                '}' + builder.toString();
     }
 }

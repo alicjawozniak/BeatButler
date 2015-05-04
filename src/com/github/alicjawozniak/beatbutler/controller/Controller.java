@@ -1,5 +1,6 @@
 package com.github.alicjawozniak.beatbutler.controller;
 
+import com.github.alicjawozniak.beatbutler.controller.listeners.PlayerModelListener;
 import com.github.alicjawozniak.beatbutler.model.PlayerModel;
 import com.github.alicjawozniak.beatbutler.view.PlayerView;
 
@@ -31,6 +32,7 @@ public class Controller {
     }
 
     public void setModel(PlayerModel model) {
+        model.addPropertyChangeListener(new PlayerModelListener());
         instance.model = model;
     }
 

@@ -7,7 +7,6 @@ import com.github.alicjawozniak.beatbutler.controller.actions.PlayAction;
 import com.github.alicjawozniak.beatbutler.controller.actions.PreviousAction;
 import com.github.alicjawozniak.beatbutler.controller.actions.ToggleShuffleAction;
 import com.github.alicjawozniak.beatbutler.model.Song;
-import com.github.alicjawozniak.beatbutler.model.library.Library;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,7 +17,6 @@ public class PlayerView {
 
     //TagEditorView editorView = new TagEditorView();
     private JPanel mainPnl;
-    private JTree libraryTree;
     private JList<Song> playlistList;
     private JLabel playingNowLbl;
     private JButton prevBtn;
@@ -31,6 +29,12 @@ public class PlayerView {
     private JSlider volumeSlr;
     private JButton repeatBtn;
     private JButton shuffleBtn;
+
+    private JTabbedPane libraryPnl;
+    private JList artistsList;
+    private JList albumsList;
+    private JList songsList;
+    private JList playlistsList;
 
     private Image defaultCover;
 
@@ -74,16 +78,9 @@ public class PlayerView {
         playlistList.setCellRenderer(new PlaylistCellRenderer());
 
         // library
-        libraryTree.setModel(new Library());
-        libraryTree.setRootVisible(false);
-        libraryTree.setCellRenderer(new LibraryCellRenderer());
 
         frame.pack();
         frame.setVisible(true);
-    }
-
-    public Image getDefaultCover() {
-        return defaultCover;
     }
 
     // playlistPnl
@@ -92,13 +89,15 @@ public class PlayerView {
         return playlistList;
     }*/
 
-    public void setCover(Image cover) {
+    public void setPlayingNowSong(String title, String artist, int time, Image cover) {
+        playingNowLbl.setText(String.format("%s - %s [%d]", artist, title, time));
+
+        if (cover == null) {
+            cover = defaultCover;
+        }
         ImageIcon icon = new ImageIcon(cover.getScaledInstance(albumLbl.getWidth(), albumLbl.getHeight(), Image.SCALE_SMOOTH));
         albumLbl.setIcon(icon);
-    }
 
-    public void setPlayingNowSong(String song, int time) {
-        playingNowLbl.setText(song);
         progressSlr.setValue(0);
         progressSlr.setMaximum(time);
     }
@@ -118,5 +117,9 @@ public class PlayerView {
 
     public void toggleShuffleBtn(boolean b) {
         shuffleBtn.setBackground(b ? Color.green : repeatBtn.getBackground());
+    }
+
+    public int getCurrentSongIndex() {
+        return playlistList.getSelectedIndex();
     }
 }

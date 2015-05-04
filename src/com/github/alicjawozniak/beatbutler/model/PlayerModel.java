@@ -1,7 +1,5 @@
 package com.github.alicjawozniak.beatbutler.model;
 
-import com.github.alicjawozniak.beatbutler.model.library.Library;
-
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
@@ -10,7 +8,17 @@ public class PlayerModel {
     private PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
 
     private Playlist currentPlaylist = new Playlist();
-    private Library library = new Library();
+    private Song currentSong = null;
+
+    public Song getCurrentSong() {
+        return currentSong;
+    }
+
+    public void setCurrentSong(Song currentSong) {
+        Song oldSong = this.currentSong;
+        this.currentSong = currentSong;
+        changeSupport.firePropertyChange("current-song", oldSong, currentSong);
+    }
 
     public Playlist getCurrentPlaylist() {
         return currentPlaylist;
@@ -18,10 +26,6 @@ public class PlayerModel {
 
     public void setCurrentPlaylist(Playlist currentPlaylist) {
         this.currentPlaylist = currentPlaylist;
-    }
-
-    public Library getLibrary() {
-        return library;
     }
 
     public PlaybackState getPlaybackState() {

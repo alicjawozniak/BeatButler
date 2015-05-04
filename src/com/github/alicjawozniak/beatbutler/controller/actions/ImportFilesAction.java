@@ -3,7 +3,6 @@ package com.github.alicjawozniak.beatbutler.controller.actions;
 import com.github.alicjawozniak.beatbutler.controller.Controller;
 import com.github.alicjawozniak.beatbutler.model.Playlist;
 import com.github.alicjawozniak.beatbutler.model.Song;
-import com.github.alicjawozniak.beatbutler.model.library.Library;
 import com.github.alicjawozniak.beatbutler.view.FileChooser;
 
 import javax.swing.*;
@@ -27,13 +26,11 @@ public class ImportFilesAction extends AbstractAction {
 
         File[] files = fileChooser.getSelectedFiles();
         Playlist currentPlaylist = c.getModel().getCurrentPlaylist();
-        Library library = c.getModel().getLibrary();
+        //Library library = c.getModel().getLibrary();
 
         for (File file : files) {
-            //currentPlaylist.add(new Song(file));
-            library.add(new Song(file));
+            currentPlaylist.add(new Song(file));
+            //library.add(new Song(file));
         }
-        // todo remove
-        System.out.println(library.toString());
     }
 }

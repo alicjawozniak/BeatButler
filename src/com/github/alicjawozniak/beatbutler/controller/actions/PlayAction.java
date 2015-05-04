@@ -3,6 +3,9 @@ package com.github.alicjawozniak.beatbutler.controller.actions;
 import com.github.alicjawozniak.beatbutler.ResourceLoader;
 import com.github.alicjawozniak.beatbutler.controller.Controller;
 import com.github.alicjawozniak.beatbutler.model.PlaybackState;
+import com.github.alicjawozniak.beatbutler.model.PlayerModel;
+import com.github.alicjawozniak.beatbutler.model.Song;
+import com.github.alicjawozniak.beatbutler.view.PlayerView;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -25,15 +28,21 @@ public class PlayAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        switch (c.getModel().getPlaybackState()) {
+        PlayerModel model = c.getModel();
+        PlayerView view = c.getView();
+
+        switch (model.getPlaybackState()) {
             case PAUSED:
             case STOPPED: // play
                 putValue(SMALL_ICON, pauseIcon);
-                c.getModel().setPlaybackState(PlaybackState.PLAYING);
+                model.setPlaybackState(PlaybackState.PLAYING);
+
+                Song song = model.getCurrentPlaylist().getElementAt(view.getCurrentSongIndex());
+                model.setCurrentSong(song);
                 break;
             case PLAYING: // pause
                 putValue(SMALL_ICON, playIcon);
-                c.getModel().setPlaybackState(PlaybackState.PAUSED);
+                model.setPlaybackState(PlaybackState.PAUSED);
                 break;
         }
     }

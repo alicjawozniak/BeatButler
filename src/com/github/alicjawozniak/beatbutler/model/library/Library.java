@@ -18,6 +18,7 @@ public class Library implements TreeModel {
         root.add(new Node<>(song.getArtist(), song.getArtist())) // artist
                 .add(new Node<>(song.getAlbum(), song.getAlbum())) // album
                 .add(new Node<>(song.getTitle(), song)); // title
+
     }
 
     @Override
@@ -58,12 +59,5 @@ public class Library implements TreeModel {
     @Override
     public void removeTreeModelListener(TreeModelListener l) {
         tree.removeTreeModelListener(l);
-    }
-
-    @Override
-    public String toString() {
-        return "Library{" +
-                root +
-                "}";
     }
 }

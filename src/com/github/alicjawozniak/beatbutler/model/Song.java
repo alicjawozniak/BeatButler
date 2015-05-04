@@ -37,24 +37,12 @@ public class Song {
             Tag tag = audioFile.getTag();
 
             Artwork artwork = tag.getFirstArtwork();
-            if (artwork != null) {
-                cover = (Image) artwork.getImage();
-            } else {
-                cover = c.getView().getDefaultCover();
-            }
+            cover = artwork != null ? (Image) artwork.getImage() : null;
 
             album = tag.getFirst(FieldKey.ALBUM);
             title = tag.getFirst(FieldKey.TITLE);
             artist = tag.getFirst(FieldKey.ARTIST);
-        } catch (CannotReadException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (TagException e) {
-            e.printStackTrace();
-        } catch (ReadOnlyFileException e) {
-            e.printStackTrace();
-        } catch (InvalidAudioFrameException e) {
+        } catch (CannotReadException | IOException | ReadOnlyFileException | TagException | InvalidAudioFrameException e) {
             e.printStackTrace();
         }
     }
