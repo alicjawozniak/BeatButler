@@ -1,19 +1,18 @@
 package com.github.alicjawozniak.beatbutler.view;
 
 import com.github.alicjawozniak.beatbutler.ResourceLoader;
-import com.github.alicjawozniak.beatbutler.controller.Controller;
-import com.github.alicjawozniak.beatbutler.controller.actions.NextAction;
-import com.github.alicjawozniak.beatbutler.controller.actions.PlayAction;
-import com.github.alicjawozniak.beatbutler.controller.actions.PreviousAction;
-import com.github.alicjawozniak.beatbutler.controller.actions.ToggleShuffleAction;
+import com.github.alicjawozniak.beatbutler.controller.PlayerController;
+import com.github.alicjawozniak.beatbutler.controller.actions.*;
 import com.github.alicjawozniak.beatbutler.model.Song;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.io.IOException;
 
 public class PlayerView {
-    Controller c = Controller.getInstance();
+    PlayerController c = PlayerController.getInstance();
 
     //TagEditorView editorView = new TagEditorView();
     private JPanel mainPnl;
@@ -22,19 +21,20 @@ public class PlayerView {
     private JButton prevBtn;
     private JButton playBtn;
     private JButton nextBtn;
-    private JLabel timeLbl;
+    private JLabel progressLbl;
     private JSlider progressSlr;
     private JLabel albumLbl;
-    private JLabel volumeLbl;
     private JSlider volumeSlr;
-    private JButton repeatBtn;
-    private JButton shuffleBtn;
+
+    private JToggleButton shuffleBtn;
 
     private JTabbedPane libraryPnl;
     private JList artistsList;
     private JList albumsList;
     private JList songsList;
     private JList playlistsList;
+    private JToggleButton repeatBtn;
+    private JLabel songLengthLbl;
 
     private Image defaultCover;
 
@@ -56,22 +56,24 @@ public class PlayerView {
         // menu bar
         frame.setJMenuBar(new PlayerMenuBar().getBar());
 
-        // volumeSld
-        volumeSlr.setValue(0);
-
-        // progressSlr
-        progressSlr.setValue(0);
+        // sliders
+        volumeSlr.setModel(c.getModel().getVolumeModel());
+        progressSlr.setModel(c.getModel().getProgressModel());
+        progressSlr.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                int value = c.getModel().getProgressModel().getValue();
+                progressLbl.setText(String.format("%2d:%02d", value / 60, value % 60));
+            }
+        });
 
         // buttons
         playBtn.setAction(PlayAction.getInstance());
         nextBtn.setAction(new NextAction());
         prevBtn.setAction(new PreviousAction());
-        shuffleBtn.setAction(new ToggleShuffleAction());
 
-        playBtn.setHideActionText(true);
-        nextBtn.setHideActionText(true);
-        prevBtn.setHideActionText(true);
-        shuffleBtn.setHideActionText(true);
+        shuffleBtn.setAction(ToggleShuffleAction.getInstance());
+        repeatBtn.setAction(ToggleRepeatAction.getInstance());
 
         // playlist
         playlistList.setModel(c.getModel().getCurrentPlaylist());
@@ -83,43 +85,22 @@ public class PlayerView {
         frame.setVisible(true);
     }
 
-    // playlistPnl
-    /*
-    public Song[] getPlaylistSelectedSongs() {
-        return playlistList;
-    }*/
+    public void updateSong() {
+        Song song = c.getModel().getCurrentSong();
 
-    public void setPlayingNowSong(String title, String artist, int time, Image cover) {
-        playingNowLbl.setText(String.format("%s - %s [%d]", artist, title, time));
+        playingNowLbl.setText(String.format("%s - %s", song.getArtist(), song.getTitle()));
 
+        Image cover = song.getCover();
         if (cover == null) {
             cover = defaultCover;
         }
         ImageIcon icon = new ImageIcon(cover.getScaledInstance(albumLbl.getWidth(), albumLbl.getHeight(), Image.SCALE_SMOOTH));
         albumLbl.setIcon(icon);
 
-        progressSlr.setValue(0);
-        progressSlr.setMaximum(time);
+        songLengthLbl.setText(String.format("%2d:%02d", song.getTime() / 60, song.getTime() % 60));
     }
 
-    public int getProgress() {
-        return progressSlr.getValue();
-    }
-
-    public void setProgress(int progress) {
-        timeLbl.setText(String.format("%2d:%02d", progressSlr.getValue() / 60, progressSlr.getValue() % 60)); // todo przenieść do modelu
-        progressSlr.setValue(progress);
-    }
-
-    public int getVolume() {
-        return volumeSlr.getValue();
-    }
-
-    public void toggleShuffleBtn(boolean b) {
-        shuffleBtn.setBackground(b ? Color.green : repeatBtn.getBackground());
-    }
-
-    public int getCurrentSongIndex() {
-        return playlistList.getSelectedIndex();
+    public void updatePlaylist() {
+        playlistList.setModel(c.getModel().getCurrentPlaylist());
     }
 }

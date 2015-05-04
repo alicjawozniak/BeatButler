@@ -7,45 +7,44 @@ import javax.swing.*;
 public class PlayerMenuBar {
     private JMenuBar bar = new JMenuBar();
 
-    private JMenu fileMenu;
-    private JMenu editMenu;
-    private JMenu playbackMenu;
-
     public PlayerMenuBar() {
-        fileMenu = new JMenu("File");
-        fileMenu.add("New playlist");
-        fileMenu.add(new JSeparator());
-        fileMenu.add(new ImportFilesAction());
-        fileMenu.add(new ImportFolderAction());
-        fileMenu.add(new JSeparator());
-        fileMenu.add(new QuitAction());
+        JMenu file = new JMenu("File");
+        file.add("New playlist"); // todo
+        file.add("Save playlist"); // todo
+        file.add(new JSeparator());
+        file.add(new ImportFilesAction());
+        file.add(new ImportFolderAction());
+        file.add(new JSeparator());
+        file.add(new QuitAction());
 
-        editMenu = new JMenu("Edit");
-        editMenu.add("Cut");
-        editMenu.add("Copy");
-        editMenu.add("Paste");
-        editMenu.add("Delete");
-        editMenu.add(new JSeparator());
-        editMenu.add("Search");
-        editMenu.add("Select all");
-        editMenu.add(new JSeparator());
-        editMenu.add("Edit tags");
+        // todo
+        JMenu edit = new JMenu("Edit");
+        edit.add("Cut");
+        edit.add("Copy");
+        edit.add("Paste");
+        edit.add("Delete");
+        edit.add(new JSeparator());
+        edit.add("Search");
+        edit.add("Select all");
+        edit.add(new JSeparator());
+        edit.add("Edit tags");
+        // ~
 
-        playbackMenu = new JMenu("Playback");
-        playbackMenu.add(PlayAction.getInstance());
-        playbackMenu.add(new NextAction());
-        playbackMenu.add(new PreviousAction());
-        playbackMenu.add(new JSeparator());
-        playbackMenu.add(new ToggleShuffleAction());
-        playbackMenu.add("Repeat");
-        playbackMenu.add(new JSeparator());
-        playbackMenu.add("Mute");
-        playbackMenu.add("Increase volume");
-        playbackMenu.add("Decrease volume");
+        JMenu playback = new JMenu("Playback");
+        playback.add(PlayAction.getInstance());
+        playback.add(new NextAction());
+        playback.add(new PreviousAction());
+        playback.add(new JSeparator());
+        playback.add(new JCheckBoxMenuItem(ToggleShuffleAction.getInstance()));
+        playback.add(new JCheckBoxMenuItem(ToggleRepeatAction.getInstance()));
+        playback.add(new JSeparator());
+        playback.add(new MuteAction());
+        playback.add(new ChangeVolumeAction(true));
+        playback.add(new ChangeVolumeAction(false));
 
-        bar.add(fileMenu);
-        bar.add(editMenu);
-        bar.add(playbackMenu);
+        bar.add(file);
+        bar.add(edit);
+        bar.add(playback);
     }
 
     public JMenuBar getBar() {

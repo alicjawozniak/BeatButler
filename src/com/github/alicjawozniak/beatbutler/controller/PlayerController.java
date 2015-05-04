@@ -4,17 +4,14 @@ import com.github.alicjawozniak.beatbutler.controller.listeners.PlayerModelListe
 import com.github.alicjawozniak.beatbutler.model.PlayerModel;
 import com.github.alicjawozniak.beatbutler.view.PlayerView;
 
-/**
- * @author Tomasz Wójcik
- */
-public class Controller {
-    private static Controller instance;
+public class PlayerController {
+    private static PlayerController instance;
     private PlayerView view;
     private PlayerModel model;
 
-    public static Controller getInstance() {
+    public static PlayerController getInstance() {
         if (instance == null) {
-            instance = new Controller();
+            instance = new PlayerController();
         }
         return instance;
     }

@@ -1,6 +1,7 @@
 package com.github.alicjawozniak.beatbutler.controller.actions;
 
 import com.github.alicjawozniak.beatbutler.ResourceLoader;
+import com.github.alicjawozniak.beatbutler.controller.PlayerController;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -12,6 +13,6 @@ public class PreviousAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        System.out.println(e.paramString());
+        PlayerController.getInstance().getModel().previous();
     }
 }

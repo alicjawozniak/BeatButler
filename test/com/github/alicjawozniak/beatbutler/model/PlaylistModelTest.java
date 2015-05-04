@@ -6,8 +6,8 @@ import org.junit.Test;
 /**
  * @author Tomasz Wójcik
  */
-public class PlaylistTest {
-    private Playlist playlist = new Playlist();
+public class PlaylistModelTest {
+    private PlaylistModel playlist = new PlaylistModel();
 
     @Test(expected = NullPointerException.class)
     public void testSetName1() throws Exception {

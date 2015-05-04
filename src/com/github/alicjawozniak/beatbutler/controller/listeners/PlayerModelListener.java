@@ -1,8 +1,8 @@
 package com.github.alicjawozniak.beatbutler.controller.listeners;
 
-import com.github.alicjawozniak.beatbutler.controller.Controller;
-import com.github.alicjawozniak.beatbutler.model.Song;
-import com.github.alicjawozniak.beatbutler.view.PlayerView;
+import com.github.alicjawozniak.beatbutler.controller.PlayerController;
+import com.github.alicjawozniak.beatbutler.controller.actions.PlayAction;
+import com.github.alicjawozniak.beatbutler.model.PlaybackState;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -11,15 +11,27 @@ import java.beans.PropertyChangeListener;
  * @author Tomasz Wójcik
  */
 public class PlayerModelListener implements PropertyChangeListener {
-    Controller c = Controller.getInstance();
+    PlayerController c = PlayerController.getInstance();
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         String property = evt.getPropertyName();
-        if (property.equals("current-song")) {
-            PlayerView view = c.getView();
-            Song song = (Song) evt.getNewValue();
-            view.setPlayingNowSong(song.getTitle(), song.getArtist(), song.getTime(), song.getCover());
+
+        switch (property) {
+            case "current-song":
+                c.getView().updateSong();
+                break;
+
+            case "current-playlist":
+                c.getView().updatePlaylist();
+                break;
+
+            case "state":
+                PlaybackState state = (PlaybackState) evt.getNewValue();
+                PlayAction action = PlayAction.getInstance();
+
+                action.changeState(state);
+                break;
         }
     }
 }

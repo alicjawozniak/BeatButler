@@ -1,25 +1,17 @@
 package com.github.alicjawozniak.beatbutler.model;
 
-import com.sun.istack.internal.NotNull;
-
 import javax.swing.*;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
-/**
- * @author Tomasz Wójcik
- */
-public class Playlist extends AbstractListModel<Song> implements Iterable<Song> {
+public class PlaylistModel extends AbstractListModel<Song> implements Iterable<Song> {
     private String name = "New playlist";
-    private List<Song> songs = new ArrayList<Song>();
+    private List<Song> songs = new ArrayList<>();
 
     public String getName() {
         return name;
     }
 
-    public void setName(@NotNull String name) {
+    public void setName(String name) {
         if (name == null)
             throw new NullPointerException();
 
@@ -31,7 +23,7 @@ public class Playlist extends AbstractListModel<Song> implements Iterable<Song> 
         this.name = name;
     }
 
-    public void add(@NotNull Song song) {
+    public void add(Song song) {
         if (song == null)
             throw new NullPointerException();
 
@@ -59,6 +51,14 @@ public class Playlist extends AbstractListModel<Song> implements Iterable<Song> 
         return songs.iterator();
     }
 
+    public ListIterator<Song> listIterator() {
+        return songs.listIterator();
+    }
+
+    public ListIterator<Song> listIterator(int index) {
+        return songs.listIterator(index);
+    }
+
     public class TitleComparator implements Comparator<Song> {
         @Override
         public int compare(Song o1, Song o2) {
@@ -69,7 +69,7 @@ public class Playlist extends AbstractListModel<Song> implements Iterable<Song> 
     public class AlbumComparator implements Comparator<Song> {
         @Override
         public int compare(Song o1, Song o2) {
-            return o2.getAlbum().compareTo(o2.getAlbum());
+            return o1.getAlbum().compareTo(o2.getAlbum());
         }
     }
 

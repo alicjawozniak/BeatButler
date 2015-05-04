@@ -1,6 +1,6 @@
 package com.github.alicjawozniak.beatbutler;
 
-import com.github.alicjawozniak.beatbutler.controller.Controller;
+import com.github.alicjawozniak.beatbutler.controller.PlayerController;
 import com.github.alicjawozniak.beatbutler.model.PlayerModel;
 import com.github.alicjawozniak.beatbutler.view.PlayerView;
 
@@ -15,7 +15,7 @@ public class Main {
             EventQueue.invokeLater(new Runnable() {
                 @Override
                 public void run() {
-                    Controller c = Controller.getInstance();
+                    PlayerController c = PlayerController.getInstance();
                     c.setModel(new PlayerModel());
                     c.setView(new PlayerView());
                 }

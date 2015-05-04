@@ -1,25 +1,21 @@
 package com.github.alicjawozniak.beatbutler.controller.actions;
 
 import com.github.alicjawozniak.beatbutler.ResourceLoader;
-import com.github.alicjawozniak.beatbutler.controller.Controller;
+import com.github.alicjawozniak.beatbutler.controller.PlayerController;
 import com.github.alicjawozniak.beatbutler.model.PlaybackState;
 import com.github.alicjawozniak.beatbutler.model.PlayerModel;
-import com.github.alicjawozniak.beatbutler.model.Song;
-import com.github.alicjawozniak.beatbutler.view.PlayerView;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 
 public class PlayAction extends AbstractAction {
-    private static Controller c = Controller.getInstance();
-    private static ImageIcon playIcon = ResourceLoader.getImageIcon("MD-play.png");
-    private static ImageIcon pauseIcon = ResourceLoader.getImageIcon("MD-pause.png");
-
+    private final static ImageIcon PLAY_ICON = ResourceLoader.getImageIcon("MD-play.png");
+    private final static ImageIcon PAUSE_ICON = ResourceLoader.getImageIcon("MD-pause.png");
+    private static PlayerController c = PlayerController.getInstance();
     private static PlayAction instance = new PlayAction();
 
     private PlayAction() {
-        super("Play");
-        putValue(SMALL_ICON, playIcon);
+        super("Play", PLAY_ICON);
     }
 
     public static PlayAction getInstance() {
@@ -29,20 +25,26 @@ public class PlayAction extends AbstractAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         PlayerModel model = c.getModel();
-        PlayerView view = c.getView();
 
         switch (model.getPlaybackState()) {
             case PAUSED:
             case STOPPED: // play
-                putValue(SMALL_ICON, pauseIcon);
-                model.setPlaybackState(PlaybackState.PLAYING);
-
-                Song song = model.getCurrentPlaylist().getElementAt(view.getCurrentSongIndex());
-                model.setCurrentSong(song);
+                model.play();
                 break;
             case PLAYING: // pause
-                putValue(SMALL_ICON, playIcon);
-                model.setPlaybackState(PlaybackState.PAUSED);
+                model.pause();
+                break;
+        }
+    }
+
+    public void changeState(PlaybackState state) {
+        switch (state) {
+            case STOPPED:
+            case PAUSED:
+                putValue(SMALL_ICON, PLAY_ICON);
+                break;
+            case PLAYING:
+                putValue(SMALL_ICON, PAUSE_ICON);
                 break;
         }
     }

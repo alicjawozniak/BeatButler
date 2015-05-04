@@ -1,6 +1,6 @@
 package com.github.alicjawozniak.beatbutler.controller.actions;
 
-import com.github.alicjawozniak.beatbutler.controller.Controller;
+import com.github.alicjawozniak.beatbutler.controller.PlayerController;
 import com.github.alicjawozniak.beatbutler.model.Song;
 import com.github.alicjawozniak.beatbutler.view.FolderChooser;
 
@@ -11,11 +11,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-/**
- * @author Tomasz Wójcik
- */
 public class ImportFolderAction extends AbstractAction {
-    private Controller c = Controller.getInstance();
+    private final static String[] extensions = new String[]{
+            "mp3"
+    };
+    private PlayerController c = PlayerController.getInstance();
 
     public ImportFolderAction() {
         super("Import folder");
@@ -31,11 +31,25 @@ public class ImportFolderAction extends AbstractAction {
             if (file.isDirectory()) {
                 getFilesFromFolder(files, file);
             } else {
+                if (hasSupportedExtension(file))
                 files.add(file);
             }
         }
 
         return files;
+    }
+
+    private static boolean hasSupportedExtension(File file) {
+        String fileExtension = file.getName().toLowerCase();
+        fileExtension = fileExtension.substring(fileExtension.lastIndexOf('.') + 1, fileExtension.length());
+
+        for (String extension : extensions) {
+            if (fileExtension.equals(extension)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     @Override

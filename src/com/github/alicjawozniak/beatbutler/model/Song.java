@@ -1,6 +1,5 @@
 package com.github.alicjawozniak.beatbutler.model;
 
-import com.github.alicjawozniak.beatbutler.controller.Controller;
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
 import org.jaudiotagger.audio.exceptions.CannotReadException;
@@ -19,13 +18,21 @@ import java.io.IOException;
  * @author Tomasz Wójcik
  */
 public class Song {
-    private static Controller c = Controller.getInstance();
-    private AudioFile audioFile;
+    public final static Song EMPTY = new Song();
+
     private String artist;
     private String title;
     private String album;
     private Image cover;
+    private File file;
     private int time;
+
+    private Song() {
+        artist = title = album = "";
+        time = 0;
+        cover = null;
+        file = null;
+    }
 
     public Song(String filename) {
         this(new File(filename));
@@ -33,7 +40,7 @@ public class Song {
 
     public Song(File file) {
         try {
-            audioFile = AudioFileIO.read(file);
+            AudioFile audioFile = AudioFileIO.read(file);
             Tag tag = audioFile.getTag();
 
             Artwork artwork = tag.getFirstArtwork();
@@ -42,6 +49,9 @@ public class Song {
             album = tag.getFirst(FieldKey.ALBUM);
             title = tag.getFirst(FieldKey.TITLE);
             artist = tag.getFirst(FieldKey.ARTIST);
+            time = audioFile.getAudioHeader().getTrackLength();
+
+            this.file = file;
         } catch (CannotReadException | IOException | ReadOnlyFileException | TagException | InvalidAudioFrameException e) {
             e.printStackTrace();
         }
@@ -69,5 +79,24 @@ public class Song {
 
     public int getTime() {
         return time;
+    }
+
+    public File getFile() {
+        return file;
+    }
+
+    public boolean isPlayable() {
+        return file != null && file.exists() && file.isFile();
+    }
+
+    @Override
+    public String toString() {
+        return "Song{" +
+                "artist='" + artist + '\'' +
+                ", title='" + title + '\'' +
+                ", album='" + album + '\'' +
+                ", time=" + time +
+                ", file=" + file +
+                '}';
     }
 }
